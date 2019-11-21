@@ -1,18 +1,21 @@
 package com.example.pidev.Entities;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
     @NotBlank(message = "you should have a First Name")
     private String Prenom;
@@ -24,6 +27,12 @@ public class User {
     private String Adresse;
     @NotBlank(message = "have you a profession???")
     private String profession;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Product> products;*/
+    @OneToMany(mappedBy="user" ,cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Collection<Product> products = new ArrayList<>();
+
 
     public User(@NotBlank(message = "you should have a First Name") String prenom, @NotBlank(message = "you should have an Last Name") String nom, @NotBlank(message = "If you don't have an email you can't sign in") String email, @Size(min = 3, max = 50) String adresse, @NotBlank(message = "have you a profession???") String profession) {
         Prenom = prenom;
@@ -82,6 +91,14 @@ public class User {
 
     public void setProfession(String profession) {
         this.profession = profession;
+    }
+
+    public Collection<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Collection<Product> products) {
+        this.products = products;
     }
 
     @Override

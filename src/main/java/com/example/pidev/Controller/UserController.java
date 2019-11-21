@@ -19,9 +19,9 @@ public class UserController {
     public String say() {
 
         List<User> a = new ArrayList<>();
-        a=  getalluser();
+        a = getalluser();
         a.forEach(System.out::println);
-        return "aaa";
+        return "ahhhhhhhhhaa";
     }
 
     @RequestMapping("/alluser")
